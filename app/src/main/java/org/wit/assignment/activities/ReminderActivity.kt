@@ -116,8 +116,8 @@ class ReminderActivity : AppCompatActivity() {
     fun validateDescription(){
         if (reminder.description.isEmpty()) {
             val builder = AlertDialog.Builder(this@ReminderActivity)
-            builder.setTitle("Empty/Default Value")
-            builder.setMessage("Description is empty, are you sure you want to continue?")
+            builder.setTitle(R.string.wrong_value)
+            builder.setMessage(R.string.empty_description)
             builder.setPositiveButton("Yes") { dialog, which ->
                 validateLocation()
             }
@@ -137,8 +137,8 @@ class ReminderActivity : AppCompatActivity() {
     fun validateLocation(){
         if (reminder.lat == 52.245696 && reminder.lng == -7.139102 && reminder.zoom == 15f) {
             val builder = AlertDialog.Builder(this@ReminderActivity)
-            builder.setTitle("Empty/Default Value")
-            builder.setMessage("Location is default locaiton, are you sure you want to continue?")
+            builder.setTitle(R.string.wrong_value)
+            builder.setMessage(R.string.default_location)
             builder.setPositiveButton("Yes") { dialog, which ->
                 /**
                  * Save reminder

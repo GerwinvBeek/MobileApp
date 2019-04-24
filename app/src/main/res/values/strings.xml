@@ -16,6 +16,9 @@
     <string name="remove_all_completed">Remove all completed items</string>
     <string name="sorting_method">Choose sorting</string>
     <string name="priority_title">Priority:</string>
+    <string name="default_location">"Location is default locaiton, are you sure you want to continue?"</string>
+    <string name="empty_description">"Description is empty, are you sure you want to continue?"</string>
+    <string name="wrong_value">Empty/Default Value"</string>
 
     <string-array name="sorting_strings">
         <item>Sort by....</item>

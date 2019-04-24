@@ -51,6 +51,7 @@ class ReminderJSONStore : ReminderStore, AnkoLogger {
                 foundReminder.zoom = reminder.zoom
                 foundReminder.done = reminder.done
                 foundReminder.deadline = reminder.deadline
+                foundReminder.priority = reminder.priority
             }
         serialize()
     }

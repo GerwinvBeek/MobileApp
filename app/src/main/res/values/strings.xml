@@ -6,6 +6,7 @@
     <string name="hint_reminderDescription">Description</string>
     <string name="menu_addReminder">Add</string>
     <string name="menu_cancelReminder">Cancel</string>
+    <string name="menu_shareReminder">Share</string>
     <string name="enter_reminder_title">Please enter a title</string>
     <string name="button_location">Set Location</string>
     <string name="title_activity_maps">Map</string>
@@ -13,13 +14,14 @@
     <string name="title_activity_reminder_maps">Map of all reminders</string>
     <string name="remove_all_completed">Remove all completed items</string>
     <string name="sorting_method">Choose sorting</string>
-    <string name="priority">Priority:</string>
+    <string name="priority_title">Priority:</string>
 
     <string-array name="sorting_strings">
         <item>Sort by....</item>
         <item>Sort by deadline</item>
         <item>Sort by status</item>
         <item>Sort by newest</item>
+        <item>Sort by priority</item>
 </string-array>
 
 </resources>

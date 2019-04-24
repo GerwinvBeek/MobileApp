@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 import org.wit.assignment.R
@@ -40,13 +41,13 @@ class ReminderActivity : AppCompatActivity(){
             reminderTitle.setText(reminder.title)
             description.setText(reminder.description)
             calendarView.date = reminder.deadline
-            priority.setText(reminder.priority)
+            priorityBar.rating = reminder.priority.toFloat()
         }
 
         btnAdd.setOnClickListener() {
             reminder.title = reminderTitle.text.toString()
             reminder.description = description.text.toString()
-            reminder.priority = priority.text.toString()
+            reminder.priority = priorityBar.rating.toLong()
 
             if (reminder.zoom == 0f) {
                var location = Location(52.245696, -7.139102, 15f)
@@ -67,6 +68,8 @@ class ReminderActivity : AppCompatActivity(){
                 finish()
             }
         }
+
+        btn
 
         reminderLocation.setOnClickListener {
             reminderLocation.setOnClickListener {

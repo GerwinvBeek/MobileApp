@@ -29,6 +29,7 @@ class ReminderMemStore : ReminderStore {
             foundReminder.zoom = reminder.zoom
             foundReminder.done = reminder.done
             foundReminder.deadline = reminder.deadline
+            foundReminder.priority = reminder.priority
         }
     }
 

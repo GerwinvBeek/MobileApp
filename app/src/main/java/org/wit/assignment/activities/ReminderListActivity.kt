@@ -61,6 +61,11 @@ class ReminderListActivity : AppCompatActivity(), ReminderListener {
                             app.reminders.delete(it)
                             app.reminders.create(it) }
                     }
+                    if (p2 == 4) {
+                        reminders.sortedBy { x -> x.priority }.reversed().forEach {
+                            app.reminders.delete(it)
+                            app.reminders.create(it) }
+                    }
                     loadReminders()
                 }
             }
@@ -84,6 +89,11 @@ class ReminderListActivity : AppCompatActivity(), ReminderListener {
         }
         if (sorting == "Sort by newest") {
             reminders.sortedBy { x -> x.id }.forEach {
+                app.reminders.delete(it)
+                app.reminders.create(it) }
+        }
+        if (sorting == "Sort by priority") {
+            reminders.sortedBy { x -> x.priority }.reversed().forEach {
                 app.reminders.delete(it)
                 app.reminders.create(it) }
         }

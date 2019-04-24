@@ -17,7 +17,7 @@ import org.wit.assignment.models.ReminderModel
 import java.text.SimpleDateFormat
 
 
-class ReminderActivity : AppCompatActivity(){
+class ReminderActivity : AppCompatActivity() {
 
     var edit = false;
     var reminder = ReminderModel()
@@ -50,7 +50,7 @@ class ReminderActivity : AppCompatActivity(){
             reminder.priority = priorityBar.rating.toLong()
 
             if (reminder.zoom == 0f) {
-               var location = Location(52.245696, -7.139102, 15f)
+                var location = Location(52.245696, -7.139102, 15f)
                 reminder.lat = location.lat
                 reminder.lng = location.lng
                 reminder.zoom = location.zoom
@@ -69,13 +69,11 @@ class ReminderActivity : AppCompatActivity(){
             }
         }
 
-        btn
-
         reminderLocation.setOnClickListener {
             reminderLocation.setOnClickListener {
                 val location = Location(52.245696, -7.139102, 15f)
                 if (reminder.zoom != 0f) {
-                    location.lat =  reminder.lat
+                    location.lat = reminder.lat
                     location.lng = reminder.lng
                     location.zoom = reminder.zoom
                 }
@@ -94,24 +92,28 @@ class ReminderActivity : AppCompatActivity(){
             reminder.deadline = date.time
         }
     }
-        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-            menuInflater.inflate(org.wit.assignment.R.menu.menu_reminder, menu)
-            if (edit && menu != null) menu.getItem(0).setVisible(true)
-            return super.onCreateOptionsMenu(menu)
-        }
 
-        override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-            when (item?.itemId) {
-                R.id.item_delete -> {
-                    app.reminders.delete(reminder)
-                    finish()
-                }
-                R.id.item_cancel -> {
-                    finish()
-                }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(org.wit.assignment.R.menu.menu_reminder, menu)
+        if (edit && menu != null) menu.getItem(0).setVisible(true)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.item_delete -> {
+                app.reminders.delete(reminder)
+                finish()
             }
-            return super.onOptionsItemSelected(item)
+            R.id.item_cancel -> {
+                finish()
+            }
+            R.id.item_share -> {
+                shareReminder()
+            }
         }
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -122,12 +124,27 @@ class ReminderActivity : AppCompatActivity(){
                     reminder.lat = location.lat
                     reminder.lng = location.lng
                     reminder.zoom = location.zoom
-                    }
                 }
             }
         }
-
-
     }
+
+    fun shareReminder() {
+        val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
+        sharingIntent.setType("text/plain");
+        val sdf = SimpleDateFormat("dd-M-yyyy")
+        val date = sdf.format(reminder.deadline)
+        val shareBody =
+                "Title: " + reminder.title + "\n" +
+                "Description: " + reminder.description + "\n" +
+                "Finished: " + reminder.done + "\n" +
+                "Deadline: " + date + "\n" +
+                "Priority: " + reminder.priority
+
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Reminder");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
+}
 
 

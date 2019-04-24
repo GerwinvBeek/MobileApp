@@ -9,6 +9,12 @@
             app:showAsAction="always"/>
 
     <item
+            android:id="@+id/item_share"
+            android:icon="@android:drawable/ic_menu_share"
+            android:title="@string/menu_shareReminder"
+            app:showAsAction="always"/>
+
+    <item
             android:id="@+id/item_cancel"
             android:title="@string/menu_cancelReminder"
             app:showAsAction="always"/>

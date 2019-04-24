@@ -22,3 +22,10 @@ All saved reminders can be viewed in a large map
 + Android Studio
 + Kotlin
 
+---
+## Requirements/Recommendations
+
++ Android
++ Minimal SDK Version 25
++ Created in Android 7.1.1
+

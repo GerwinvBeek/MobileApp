@@ -2,6 +2,7 @@ package org.wit.assignment.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -34,6 +35,9 @@ class ReminderActivity : AppCompatActivity() {
         calendarView.minDate = System.currentTimeMillis()
         setSupportActionBar(toolbarAdd)
 
+        /**
+         * if user is editing an item, apply values of selected reminder to corresponding fields
+         */
         if (intent.hasExtra("reminder_edit")) {
             edit = true
             btnAdd.setText(R.string.save_reminder)
@@ -44,11 +48,18 @@ class ReminderActivity : AppCompatActivity() {
             priorityBar.rating = reminder.priority.toFloat()
         }
 
+        /**
+         * Add Click Listener to Add button
+         * Applies chosen values to reminder object
+         */
         btnAdd.setOnClickListener() {
             reminder.title = reminderTitle.text.toString()
             reminder.description = description.text.toString()
             reminder.priority = priorityBar.rating.toLong()
 
+            /**
+             * If user didn't choose location, use default location.
+             */
             if (reminder.zoom == 0f) {
                 var location = Location(52.245696, -7.139102, 15f)
                 reminder.lat = location.lat
@@ -56,19 +67,22 @@ class ReminderActivity : AppCompatActivity() {
                 reminder.zoom = location.zoom
             }
 
+            /**
+             * Small validation to check if user filled in a title with at least 4 characters.
+             * If title is correct, bigger validation on non-breaking values
+             */
             if (reminder.title.isEmpty()) {
                 toast(R.string.enter_reminder_title)
+            } else if(reminder.title.length < 4){
+                toast(R.string.title_too_short)
             } else {
-                if (edit) {
-                    app.reminders.update(reminder.copy())
-                } else {
-                    app.reminders.create(reminder.copy())
-                }
-                setResult(AppCompatActivity.RESULT_OK)
-                finish()
+                validateDescription()
             }
-        }
+            }
 
+        /**
+         * Open the mapactivity and set default location
+         */
         reminderLocation.setOnClickListener {
             reminderLocation.setOnClickListener {
                 val location = Location(52.245696, -7.139102, 15f)
@@ -81,6 +95,9 @@ class ReminderActivity : AppCompatActivity() {
             }
         }
 
+        /**
+         * Set new date from datepicker to correct format
+         */
         calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
 
             val sdf = SimpleDateFormat("dd-M-yyyy hh:mm:ss")
@@ -93,12 +110,75 @@ class ReminderActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Validation if description is filled in
+     */
+    fun validateDescription(){
+        if (reminder.description.isEmpty()) {
+            val builder = AlertDialog.Builder(this@ReminderActivity)
+            builder.setTitle("Empty/Default Value")
+            builder.setMessage("Description is empty, are you sure you want to continue?")
+            builder.setPositiveButton("Yes") { dialog, which ->
+                validateLocation()
+            }
+            builder.setNeutralButton("No") { dialog, which ->
+                toast("Canceled")
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        } else {
+            validateLocation()
+        }
+    }
+
+    /**
+     * Validation to check if the location is changed or that the user is using the default location
+     */
+    fun validateLocation(){
+        if (reminder.lat == 52.245696 && reminder.lng == -7.139102 && reminder.zoom == 15f) {
+            val builder = AlertDialog.Builder(this@ReminderActivity)
+            builder.setTitle("Empty/Default Value")
+            builder.setMessage("Location is default locaiton, are you sure you want to continue?")
+            builder.setPositiveButton("Yes") { dialog, which ->
+                /**
+                 * Save reminder
+                 */
+                if (edit) {
+                    app.reminders.update(reminder.copy())
+                } else {
+                    app.reminders.create(reminder.copy())
+                }
+                setResult(AppCompatActivity.RESULT_OK)
+                finish()
+            }
+            builder.setNeutralButton("No") { dialog, which ->
+                toast("Canceled")
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        } else {
+            /**
+             * Save reminder
+             */
+            if (edit) {
+                app.reminders.update(reminder.copy())
+            } else {
+                app.reminders.create(reminder.copy())
+            }
+            setResult(AppCompatActivity.RESULT_OK)
+            finish()
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(org.wit.assignment.R.menu.menu_reminder, menu)
         if (edit && menu != null) menu.getItem(0).setVisible(true)
         return super.onCreateOptionsMenu(menu)
     }
 
+    /**
+     * Add listeners to items in actionbar (delete, cancel and share)
+     */
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.item_delete -> {
@@ -115,6 +195,9 @@ class ReminderActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Add chosen location to reminder
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -129,6 +212,9 @@ class ReminderActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Create sharingintent and add body to the created intent
+     */
     fun shareReminder() {
         val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
         sharingIntent.setType("text/plain");
@@ -146,5 +232,6 @@ class ReminderActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 }
+
 
 

@@ -32,6 +32,9 @@ class ReminderAdapter constructor(private var reminders: List<ReminderModel>,
 
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        /**
+         * Add information and listeners to itemview
+         */
         fun bind(reminder: ReminderModel, listener : ReminderListener) {
             itemView.reminderTitle.text = reminder.title
             itemView.description.text = reminder.description
@@ -45,6 +48,10 @@ class ReminderAdapter constructor(private var reminders: List<ReminderModel>,
         }
     }
 }
+
+/**
+ * Listeners of reminders, makes it able to access the listener in ReminderListActivity
+ */
 interface ReminderListener {
     fun onReminderClick(reminder: ReminderModel)
     fun onCheckboxChange(reminder: ReminderModel)

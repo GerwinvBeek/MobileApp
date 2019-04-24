@@ -34,13 +34,18 @@ class ReminderJSONStore : ReminderStore, AnkoLogger {
         return reminders
     }
 
+    /**
+     * Create reminder and save it to JSON
+     */
     override fun create(reminder: ReminderModel) {
         reminder.id = generateRandomId()
         reminders.add(reminder)
         serialize()
     }
 
-
+    /**
+     * update reminder with new values from ReminderActivity
+     */
     override fun update(reminder: ReminderModel) {
         var foundReminder: ReminderModel? = reminders.find { p -> p.id == reminder.id }
             if (foundReminder != null) {
@@ -56,16 +61,25 @@ class ReminderJSONStore : ReminderStore, AnkoLogger {
         serialize()
     }
 
+    /**
+     * Serialize all reminders and write to JSON
+     */
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(reminders, listType)
         write(context, JSON_FILE, jsonString)
     }
 
+    /**
+     * Get JSON and save values to reminders
+     */
     private fun deserialize() {
         val jsonString = read(context, JSON_FILE)
         reminders = Gson().fromJson(jsonString, listType)
     }
 
+    /**
+     * Delete reminder and save changes to JSON
+     */
     override fun delete(reminder: ReminderModel) {
         reminders.remove(reminder)
         serialize()

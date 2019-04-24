@@ -56,6 +56,10 @@ class ReminderMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
         mapView.onSaveInstanceState(outState)
     }
 
+    /**
+     * Place marker on map for every reminder
+     * Move camera to last marker
+     */
     fun configureMap() {
         map.uiSettings.setZoomControlsEnabled(true)
         map.setOnMarkerClickListener(this)
@@ -67,6 +71,9 @@ class ReminderMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
         }
     }
 
+    /**
+     * Show reminder information if user clicks on marker
+     */
     override fun onMarkerClick(marker: Marker): Boolean {
         reminderTitle.text = marker.title
         val reminder = app.reminders.findAll().find { x -> x.title == marker.title }

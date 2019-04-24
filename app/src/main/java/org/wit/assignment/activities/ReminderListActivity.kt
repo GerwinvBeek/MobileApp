@@ -38,6 +38,9 @@ class ReminderListActivity : AppCompatActivity(), ReminderListener {
         removeAllButton.setOnClickListener { onRemoveAllClick() }
         refreshButton.setOnClickListener { onRefreshClick() }
 
+        /**
+         * Add sorting to each option in dropdown
+         */
         sorting_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
@@ -72,6 +75,9 @@ class ReminderListActivity : AppCompatActivity(), ReminderListener {
         }
     }
 
+    /**
+     * Refresh list based on chosen sorting
+     */
     fun onRefreshClick(){
         val reminders = app.reminders.findAll()
 
@@ -113,6 +119,9 @@ class ReminderListActivity : AppCompatActivity(), ReminderListener {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Open ReminderActivity with chosen reminder
+     */
     override fun onReminderClick(reminder: ReminderModel) {
         startActivityForResult(intentFor<ReminderActivity>().putExtra("reminder_edit", reminder), 0)
     }
@@ -131,12 +140,18 @@ class ReminderListActivity : AppCompatActivity(), ReminderListener {
         recyclerView.adapter?.notifyDataSetChanged()
     }
 
+    /**
+     * Set reminder as completed or open by reverting the property 'done'
+     */
     override fun onCheckboxChange(reminder: ReminderModel) {
         reminder.done = !reminder.done
         app.reminders.update(reminder.copy())
         loadReminders()
     }
 
+    /**
+     * Remove all completed reminders
+     */
     fun onRemoveAllClick() {
         var reminders = app.reminders.findAll().filter { x -> x.done == true }
         reminders.forEach{app.reminders.delete(it)}

@@ -14,11 +14,17 @@ class ReminderMemStore : ReminderStore {
         return reminders
     }
 
+    /**
+     * Add reminder to memory
+     */
     override fun create(placemark: ReminderModel) {
         placemark.id = getId()
         reminders.add(placemark)
     }
 
+    /**
+     * Update changed reminder in memory
+     */
     override fun update(reminder: ReminderModel) {
         var foundReminder: ReminderModel? = reminders.find { p -> p.id == reminder.id }
         if (foundReminder != null) {
@@ -33,6 +39,9 @@ class ReminderMemStore : ReminderStore {
         }
     }
 
+    /**
+     * Delete reminder from memory
+     */
     override fun delete(reminder: ReminderModel) {
         reminders.remove(reminder)
     }

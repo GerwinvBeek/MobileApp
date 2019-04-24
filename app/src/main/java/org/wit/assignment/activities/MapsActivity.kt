@@ -36,6 +36,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,  GoogleMap.OnMarke
         map.setOnMarkerClickListener(this)
         map.setOnCameraIdleListener(this)
 
+        /**
+         * Set position of marker on map
+         */
         val loc = LatLng(location.lat, location.lng)
         var options = MarkerOptions()
             .title("Placemark")
@@ -46,6 +49,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,  GoogleMap.OnMarke
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
     }
 
+    /**
+     * Save location if user goes back to ReminderActivity
+     */
     override fun onBackPressed() {
         val resultIntent = Intent()
         resultIntent.putExtra("location", location)
@@ -60,18 +66,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,  GoogleMap.OnMarke
     override fun onMarkerDrag(marker: Marker) {
     }
 
+    /**
+     * Save location if user drags marker to new location
+     */
     override fun onMarkerDragEnd(marker: Marker) {
         location.lat = marker.position.latitude
         location.lng = marker.position.longitude
         location.zoom = map.cameraPosition.zoom
     }
 
+    /**
+     * Show gps location if user clicks on marker
+     */
     override fun onMarkerClick(marker: Marker): Boolean {
         val loc = LatLng(location.lat, location.lng)
         marker.setSnippet("GPS : " + loc.toString())
         return false
     }
 
+    /**
+     * place marker in the middle of the screen if user moves map
+     */
     override fun onCameraIdle() {
         val postion = map.cameraPosition.target
         location.lat = postion.latitude

@@ -10,6 +10,9 @@ class MainApp: Application(), AnkoLogger {
 
     lateinit var reminders: ReminderStore
 
+    /**
+     * Create application with phone memory of JSON
+     */
     override fun onCreate() {
         super.onCreate()
 //        reminders = ReminderMemStore()
